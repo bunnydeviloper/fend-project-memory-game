@@ -1,14 +1,8 @@
-/*
- * Create a list that holds all of your cards
- */
+// Define all initial variables:
 const cards = document.getElementsByClassName('card');
 const initialDeck = [...cards];
-
 const deck = document.querySelector('.deck');
-
-
-
-
+const restart = document.querySelector('.restart');
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
@@ -39,15 +33,61 @@ function shuffleDeck() {
 // Display the cards on the page
 window.onload = function() {
   shuffleDeck();
+  startGame();
 }
 
 /*
- * set up the event listener for a card. If a card is clicked:
- *  - display the card's symbol (put this functionality in another function that you call from this one)
- *  - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
- *  - if the list already has another card, check to see if the two cards match
- *    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
- *    + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
  *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
+
+let openCards = []; // temporary list of open cards
+
+const startGame = function() {
+  
+  // hide all the initial cards
+  openCards = [];
+  // reset all the cards properties
+  initialDeck.forEach(function(card) {
+    card.classList.remove('show', 'open', 'match');
+  });
+
+};
+
+const match = function() {
+  openCards[0].classList.add('match');
+  openCards[1].classList.add('match');
+  openCards = []; // reset list of open cards to none
+};
+
+const noMatch = function() {
+  openCards[0].classList.remove('open', 'show');
+  openCards[1].classList.remove('open', 'show');
+  openCards = []; // reset list of open cards to none
+};
+
+// Add open cards to array
+const addOpenCards = function() {
+  openCards.push(this);
+  if (openCards.length === 2) {
+    // check if 2 current cards are match
+    (openCards[0].querySelector('i').classList.value ===
+     openCards[1].querySelector('i').classList.value)
+      ? match() : setTimeout(noMatch, 500); // setTimeout delay half a sec. so user can see cards
+  }
+};
+
+// Each click, flip the card and display the card's symbol
+const flipCard = function() {
+  if (openCards.length === 2) return; // only allow user to see maximum 2 cards at a time
+  this.classList.toggle('open');
+  this.classList.toggle('show');
+};
+
+// Set up click event listener for each card
+initialDeck.forEach(function(card) {
+  card.addEventListener('click', flipCard);
+  card.addEventListener('click', addOpenCards);
+});
+
+restart.addEventListener('click', startGame);
