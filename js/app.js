@@ -19,7 +19,7 @@ function shuffle(array) {
     return array;
 }
 
-function shuffleDeck() {
+const shuffleDeck = function() {
   // shuffle the list of cards using the provided "shuffle" method 
   shuffle(initialDeck);
   // loop through each card and create its HTML
@@ -29,6 +29,17 @@ function shuffleDeck() {
     deck.appendChild(newCard);
   } 
 }
+
+const startGame = function() {
+  
+  // hide all the initial cards
+  openCards = [];
+  // reset all the cards properties
+  initialDeck.forEach(function(card) {
+    card.classList.remove('show', 'open', 'match');
+  });
+
+};
 
 // Display the cards on the page
 window.onload = function() {
@@ -43,20 +54,9 @@ window.onload = function() {
 
 let openCards = []; // temporary list of open cards
 
-const startGame = function() {
-  
-  // hide all the initial cards
-  openCards = [];
-  // reset all the cards properties
-  initialDeck.forEach(function(card) {
-    card.classList.remove('show', 'open', 'match');
-  });
-
-};
-
-const match = function() {
-  openCards[0].classList.add('match');
-  openCards[1].classList.add('match');
+const match = function(status) {
+  openCards[0].classList.add(status);
+  openCards[1].classList.add(status);
   openCards = []; // reset list of open cards to none
 };
 
@@ -73,7 +73,7 @@ const addOpenCards = function() {
     // check if 2 current cards are match
     (openCards[0].querySelector('i').classList.value ===
      openCards[1].querySelector('i').classList.value)
-      ? match() : setTimeout(noMatch, 500); // setTimeout delay half a sec. so user can see cards
+      ? match('match') : setTimeout(noMatch, 500); // setTimeout delay half a sec. so user can see cards
   }
 };
 
