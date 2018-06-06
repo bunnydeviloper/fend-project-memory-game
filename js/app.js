@@ -2,7 +2,6 @@
 const cards = document.getElementsByClassName('card');
 const initialDeck = [...cards];
 const deck = document.querySelector('.deck');
-const restart = document.querySelector('.restart');
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
@@ -31,21 +30,18 @@ const shuffleDeck = function() {
 }
 
 const startGame = function() {
-  
-  // hide all the initial cards
-  openCards = [];
   // reset all the cards properties
   initialDeck.forEach(function(card) {
     card.classList.remove('show', 'open', 'match');
   });
+  // hide all the initial cards
+  openCards = [];
+  shuffleDeck();
 
 };
 
 // Display the cards on the page
-window.onload = function() {
-  shuffleDeck();
-  startGame();
-}
+window.onload = function() { startGame(); }; 
 
 /*
  *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
@@ -54,15 +50,11 @@ window.onload = function() {
 
 let openCards = []; // temporary list of open cards
 
-const match = function(status) {
-  openCards[0].classList.add(status);
-  openCards[1].classList.add(status);
-  openCards = []; // reset list of open cards to none
-};
-
-const noMatch = function() {
-  openCards[0].classList.remove('open', 'show');
-  openCards[1].classList.remove('open', 'show');
+const matchOrNot = function(status1, status2) {
+  openCards.forEach((e) => { 
+    e.classList.toggle(status1);
+    e.classList.toggle(status2);
+  });
   openCards = []; // reset list of open cards to none
 };
 
@@ -73,7 +65,8 @@ const addOpenCards = function() {
     // check if 2 current cards are match
     (openCards[0].querySelector('i').classList.value ===
      openCards[1].querySelector('i').classList.value)
-      ? match('match') : setTimeout(noMatch, 500); // setTimeout delay half a sec. so user can see cards
+      ? matchOrNot('match') 
+      : setTimeout(function() { matchOrNot('open', 'show') }, 500); // delay half second so user can see cards
   }
 };
 
@@ -90,4 +83,5 @@ initialDeck.forEach(function(card) {
   card.addEventListener('click', addOpenCards);
 });
 
+const restart = document.querySelector('.restart');
 restart.addEventListener('click', startGame);
