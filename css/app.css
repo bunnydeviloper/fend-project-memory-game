@@ -113,6 +113,7 @@ h1 {
  * Styles for Winning Message
  */
 .winner {
+    position: fixed;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -120,7 +121,7 @@ h1 {
     text-align: center;
     width: 50%;
     height: 30%;
-    border: solid;
-    position: fixed;
+    border: solid red;
+    border-radius: 8px;
     background-color: white;
 }
