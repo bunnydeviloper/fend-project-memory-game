@@ -4,6 +4,7 @@ const initialDeck = [...cards];
 const deck = document.querySelector('.deck');
 const displayMoves = document.querySelector('.moves');
 const restart = document.querySelector('.restart');
+const stars = document.querySelectorAll('.stars li');
 
 let moves = 0; // set initial move to 0
 let openCards = []; // temporary list of open cards
@@ -36,6 +37,10 @@ const shuffleDeck = function() {
 const startGame = function() {
   moves = 0;
   displayMoves.innerText = moves;
+
+  // reset initial rating to 3 stars
+  stars.forEach(function(star) { star.style.display = 'inline-block' });
+
   // reset all the cards properties
   initialDeck.forEach(function(card) {
     card.classList.remove('show', 'open', 'match');
@@ -57,10 +62,13 @@ const matchOrNot = function(status1, status2) {
   openCards = []; // reset list of open cards to none
 };
 
+const removeStars = function() {
+  if (moves === 9) stars[0].style.display = 'none';
+  if (moves === 13) stars[1].style.display = 'none';
+};
+
 const addCards = function() {
-  // increment the move counter and display it on the page (fn)
-  moves++;
-  displayMoves.innerText = moves;
+  removeStars();
 
   // each click, flip the card and display the card's symbol
   this.classList.toggle('open');
@@ -70,6 +78,10 @@ const addCards = function() {
   openCards.push(this);
 
   if (openCards.length === 2) {
+    // increment the move counter and display it on the page (fn)
+    moves++;
+    displayMoves.innerText = moves;
+
     // check if 2 current cards are match
     (openCards[0].querySelector('i').classList.value ===
      openCards[1].querySelector('i').classList.value)
