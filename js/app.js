@@ -8,6 +8,7 @@ const stars = document.querySelectorAll('.stars li');
 
 let moves = 0; // set initial move to 0
 let openCards = []; // temporary list of open cards
+let allStars = 3; // initial star rating is 3
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
@@ -63,13 +64,17 @@ const matchOrNot = function(status1, status2) {
 };
 
 const removeStars = function() {
-  if (moves === 9) stars[0].style.display = 'none';
-  if (moves === 13) stars[1].style.display = 'none';
+  if (moves === 9) {
+    stars[0].style.display = 'none';
+    allStars--;
+  }
+  if (moves === 13) {
+    stars[1].style.display = 'none';
+    allStars--;
+  }
 };
 
 const addCards = function() {
-  removeStars();
-
   // each click, flip the card and display the card's symbol
   this.classList.toggle('open');
   this.classList.toggle('show');
@@ -78,6 +83,7 @@ const addCards = function() {
   openCards.push(this);
 
   if (openCards.length === 2) {
+    removeStars();
     // increment the move counter and display it on the page (fn)
     moves++;
     displayMoves.innerText = moves;
