@@ -81,11 +81,11 @@ const matched = () => {
 };
 
 const removeStars = () => {
-  if (moves === 9) {
+  if (moves === 15) {
     stars[0].style.display = 'none';
     allStars--;
   }
-  if (moves === 13) {
+  if (moves === 25) {
     stars[1].style.display = 'none';
     allStars--;
   }
