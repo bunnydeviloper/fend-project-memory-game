@@ -5,10 +5,12 @@ const deck = document.querySelector('.deck');
 const displayMoves = document.querySelector('.moves');
 const restart = document.querySelector('.restart');
 const stars = document.querySelectorAll('.stars li');
+const winner = document.querySelector('.winner');
 
 let moves = 0; // set initial move to 0
 let openCards = []; // temporary list of open cards
 let allStars = 3; // initial star rating is 3
+let matchedPairs = 0; //set initial matched pair to 0
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
@@ -38,6 +40,8 @@ const shuffleDeck = function() {
 const startGame = function() {
   moves = 0;
   displayMoves.innerText = moves;
+  matchedPairs = 0;
+  winner.style.display = 'none';
 
   // reset initial rating to 3 stars
   stars.forEach(function(star) { star.style.display = 'inline-block' });
@@ -55,12 +59,16 @@ window.onload = function() { startGame(); };
 // Restart when user clicked on the restart button
 restart.addEventListener('click', startGame);
 
-const matchOrNot = function(status1, status2) {
-  openCards.forEach((e) => { 
-    e.classList.toggle(status1);
-    e.classList.toggle(status2);
-  });
-  openCards = []; // reset list of open cards to none
+const noMatch = function() {
+  openCards[0].classList.remove('open', 'show');
+  openCards[1].classList.remove('open', 'show');
+  openCards = []; // reset list of open cards
+};
+
+const matched = function() {
+  openCards[0].classList.add('match');
+  openCards[1].classList.add('match');
+  openCards = []; // reset list of open cards
 };
 
 const removeStars = function() {
@@ -74,30 +82,42 @@ const removeStars = function() {
   }
 };
 
-const addCards = function() {
+const movesCounter = function() {
+  // increment the move counter and display it on the page (fn)
+  moves++;
+  displayMoves.innerText = moves;
+};
+
+const flipCards = function() {
+  if (openCards.length === 2) return; // only allow user to see 2 cards at a time
+
   // each click, flip the card and display the card's symbol
-  this.classList.toggle('open');
-  this.classList.toggle('show');
+  if (!this.classList.contains('match')) {
+    this.classList.toggle('open');
+    this.classList.toggle('show');
+  }
+};
 
-  // Add open cards to array
-  openCards.push(this);
-
+const checkPairs = function() {
+  if (!this.classList.contains('match')) openCards.push(this); // Add open cards to array
   if (openCards.length === 2) {
-    removeStars();
-    // increment the move counter and display it on the page (fn)
-    moves++;
-    displayMoves.innerText = moves;
-
     // check if 2 current cards are match
-    (openCards[0].querySelector('i').classList.value ===
-     openCards[1].querySelector('i').classList.value)
-      ? matchOrNot('match') 
-      : setTimeout(function() { matchOrNot('open', 'show') }, 500); // delay half second so user can see cards
-    return; // soft reset after user have seen 2 cards
+    if (openCards[0].querySelector('i').classList.value === openCards[1].querySelector('i').classList.value) {
+      matched();
+      matchedPairs++;
+      if (matchedPairs === 8) winner.style.display = 'flex';
+    } else {
+      setTimeout(noMatch, 500); // delay half second so user can see cards
+    }
+    movesCounter();
+    removeStars();
   }
 };
 
 // Set up click event listener for each card
-initialDeck.forEach(function(card) { card.addEventListener('click', addCards); });
+initialDeck.forEach(function(card) {
+    card.addEventListener('click', flipCards);
+    card.addEventListener('click', checkPairs);
+});
 
 // if all cards have matched, display a message with the final score (fn)

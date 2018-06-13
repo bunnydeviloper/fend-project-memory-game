@@ -108,3 +108,20 @@ h1 {
     float: right;
     cursor: pointer;
 }
+
+/*
+ * Styles for Winning Message
+ */
+.winner {
+    position: fixed;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 50%;
+    height: 30%;
+    border: solid red;
+    border-radius: 8px;
+    background-color: white;
+}
