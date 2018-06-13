@@ -25,7 +25,7 @@ function shuffle(array) {
     return array;
 }
 
-const shuffleDeck = function() {
+const shuffleDeck = () => {
   // shuffle the list of cards using the provided "shuffle" method above
   shuffle(initialDeck);
   
@@ -37,17 +37,17 @@ const shuffleDeck = function() {
   } 
 }
 
-const startGame = function() {
+const startGame = () => {
   moves = 0;
   displayMoves.innerText = moves;
   matchedPairs = 0;
   winner.style.display = 'none';
 
   // reset initial rating to 3 stars
-  stars.forEach(function(star) { star.style.display = 'inline-block' });
+  stars.forEach((star) => { star.style.display = 'inline-block' });
 
   // reset all the cards properties
-  initialDeck.forEach(function(card) {
+  initialDeck.forEach((card) => {
     card.classList.remove('show', 'open', 'match');
   });
   openCards = []; // hide all the initial cards
@@ -55,23 +55,24 @@ const startGame = function() {
 };
 
 // Display the cards on the page
-window.onload = function() { startGame(); }; 
+window.onload = () => { startGame(); }; 
+
 // Restart when user clicked on the restart button
 restart.addEventListener('click', startGame);
 
-const noMatch = function() {
+const noMatch = () => {
   openCards[0].classList.remove('open', 'show');
   openCards[1].classList.remove('open', 'show');
   openCards = []; // reset list of open cards
 };
 
-const matched = function() {
+const matched = () => {
   openCards[0].classList.add('match');
   openCards[1].classList.add('match');
   openCards = []; // reset list of open cards
 };
 
-const removeStars = function() {
+const removeStars = () => {
   if (moves === 9) {
     stars[0].style.display = 'none';
     allStars--;
@@ -82,7 +83,7 @@ const removeStars = function() {
   }
 };
 
-const movesCounter = function() {
+const movesCounter = () => {
   // increment the move counter and display it on the page (fn)
   moves++;
   displayMoves.innerText = moves;
@@ -115,13 +116,13 @@ const checkPairs = function() {
 };
 
 // Set up click event listener for each card
-initialDeck.forEach(function(card) {
+initialDeck.forEach((card) => {
     card.addEventListener('click', flipCards);
     card.addEventListener('click', checkPairs);
 });
 
 // if all cards have matched, display a message with the final score (fn)
-const final = function() {
+const final = () => {
   winner.style.display = 'flex';
   document.querySelector('.totalMoves').innerHTML = ` ${moves}`;
   document.querySelector('.totalStars').innerHTML = ` ${allStars}`;
