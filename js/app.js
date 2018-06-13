@@ -69,8 +69,6 @@ const matched = function() {
   openCards[0].classList.add('match');
   openCards[1].classList.add('match');
   openCards = []; // reset list of open cards
-  matchedPairs++;
-  if (matchedPairs === 8) winner.style.display = 'inline-block';
 };
 
 const removeStars = function() {
@@ -91,23 +89,23 @@ const movesCounter = function() {
 };
 
 const flipCards = function() {
-  console.log(openCards);
   if (openCards.length === 2) return; // only allow user to see 2 cards at a time
 
   // each click, flip the card and display the card's symbol
-  else {
-  this.classList.toggle('open');
-  this.classList.toggle('show');
+  if (!this.classList.contains('match')) {
+    this.classList.toggle('open');
+    this.classList.toggle('show');
   }
 };
 
 const checkPairs = function() {
-  openCards.push(this); // Add open cards to array
-
+  if (!this.classList.contains('match')) openCards.push(this); // Add open cards to array
   if (openCards.length === 2) {
     // check if 2 current cards are match
     if (openCards[0].querySelector('i').classList.value === openCards[1].querySelector('i').classList.value) {
       matched();
+      matchedPairs++;
+      if (matchedPairs === 8) winner.style.display = 'flex';
     } else {
       setTimeout(noMatch, 500); // delay half second so user can see cards
     }
