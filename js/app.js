@@ -155,3 +155,5 @@ const final = () => {
   // click button to restart the game
   document.querySelector('.again').addEventListener('click', startGame);
 };
+
+ // Citation: Final project finished with help from: https://codepen.io/Mithrawn/pen/yjWYmx
