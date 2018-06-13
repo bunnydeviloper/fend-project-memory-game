@@ -105,7 +105,7 @@ const checkPairs = function() {
     if (openCards[0].querySelector('i').classList.value === openCards[1].querySelector('i').classList.value) {
       matched();
       matchedPairs++;
-      if (matchedPairs === 8) winner.style.display = 'flex';
+      if (matchedPairs === 8) final();
     } else {
       setTimeout(noMatch, 500); // delay half second so user can see cards
     }
@@ -121,3 +121,9 @@ initialDeck.forEach(function(card) {
 });
 
 // if all cards have matched, display a message with the final score (fn)
+const final = function() {
+  winner.style.display = 'flex';
+  document.querySelector('.totalMoves').innerHTML = ` ${moves}`;
+  document.querySelector('.totalStars').innerHTML = ` ${allStars}`;
+  document.querySelector('.again').addEventListener('click', startGame);
+};
