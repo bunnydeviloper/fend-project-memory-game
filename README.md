@@ -3,7 +3,7 @@
 Note: Starter files forked from Udacity  
 
 ## Final result [here](https://bunnydeviloper.github.io/fend-project-memory-game/)
-![screenshot](https://bunnydeviloper.github.io/fend-project-memory-game/img/matching-game.png)
+![screenshot](https://bunnydeviloper.github.io/fend-project-memory-game/img/matching-game.PNG)
 
 ## Game Behavior
 
